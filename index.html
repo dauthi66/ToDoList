@@ -10,8 +10,12 @@
 <body>
     <h1>To Do List</h1>
 
-    <label for="list_item">Title of Item</label>
-    <input type="text" id="list_item"> 
+    <div id="incomplete_items"></div>
+    <br> 
+    <div id="complete_items"></div>
+
+    <label for="item_name">Title of Item</label>
+    <input type="text" id="item_name"> 
     <span>*</span>
     <br>
 
@@ -20,7 +24,11 @@
     <span>*</span>
     <br>
 
-    <input type="button" value="Add To Do Item">
+    <label for="is_complete">Complete</label>
+    <input type="checkbox" id="is_complete">
+    <br>
+
+    <input type="button" value="Add To Do Item" id="add_item">
 
     <script src="https://unpkg.com/js-datepicker"></script>
     <script src="js/main.js"></script>
