@@ -56,7 +56,33 @@ function getToDoItem():ToDoItem{
  * Displays ToDoItem on To Do List
  */
 function displayToDoItem(item:ToDoItem):void{
-    
+    //create h3 with users item name
+    let itemName = document.createElement("h3");
+    itemName.innerText = item.itemName;
+    // create p with user's due date
+    let dueDate = document.createElement("p");
+    dueDate.innerText = item.dueDate.toDateString();
+
+    //create item div to populate with user data
+    let itemDiv = document.createElement("div");
+    //if it is complete, give it a class for styling
+    if (item.isComplete) {
+        itemDiv.classList.add("complete")
+    }
+
+    //place itemName and DueDate within created itemDiv
+    itemDiv.appendChild(itemName);
+    itemDiv.appendChild(dueDate);
+
+    //place populated itemDiv in complete or incomplete div
+    if(item.isComplete){
+        let completeToDo = $("complete_items").appendChild(itemDiv); 
+    }
+    else{
+        let completeToDo = $("incomplete_items").appendChild(itemDiv); 
+
+    }
+
 }
 
 //refactor cast and get by id.

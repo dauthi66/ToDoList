@@ -29,6 +29,22 @@ function getToDoItem() {
     return newItem;
 }
 function displayToDoItem(item) {
+    var itemName = document.createElement("h3");
+    itemName.innerText = item.itemName;
+    var dueDate = document.createElement("p");
+    dueDate.innerText = item.dueDate.toDateString();
+    var itemDiv = document.createElement("div");
+    if (item.isComplete) {
+        itemDiv.classList.add("complete");
+    }
+    itemDiv.appendChild(itemName);
+    itemDiv.appendChild(dueDate);
+    if (item.isComplete) {
+        var completeToDo = $("complete_items").appendChild(itemDiv);
+    }
+    else {
+        var completeToDo = $("incomplete_items").appendChild(itemDiv);
+    }
 }
 function $HTMLinput(id) {
     return document.getElementById(id);
