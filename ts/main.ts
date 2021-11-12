@@ -36,7 +36,7 @@ function isValid():boolean{
 }
 
 /**
- * get input from form and set int toDoItem
+ * get input from form and set in toDoItem object
  */
 function getToDoItem():ToDoItem{
 
@@ -65,9 +65,17 @@ function displayToDoItem(item:ToDoItem):void{
 
     //create item div to populate with user data
     let itemDiv = document.createElement("div");
-    //if it is complete, give it a class for styling
+    //setup onclick event
+    itemDiv.onclick = markAsComplete;
+
+    //give all itemDivs class todo for syling
+    itemDiv.classList.add("toDo");
+    //class it as complete or incomplete for styling
     if (item.isComplete) {
-        itemDiv.classList.add("complete")
+        itemDiv.classList.add("complete");
+    }
+    else{
+        itemDiv.classList.add("incomplete");
     }
 
     //place itemName and DueDate within created itemDiv
@@ -76,13 +84,49 @@ function displayToDoItem(item:ToDoItem):void{
 
     //place populated itemDiv in complete or incomplete div
     if(item.isComplete){
-        let completeToDo = $("complete_items").appendChild(itemDiv); 
+        $("complete_items").appendChild(itemDiv); 
     }
     else{
-        let completeToDo = $("incomplete_items").appendChild(itemDiv); 
-
+        $("incomplete_items").appendChild(itemDiv); 
     }
+}
 
+/**
+ * if incomplete adds complete to the element's class, and vice versa
+ * play a corresponding sound
+ */
+function markAsComplete(){
+    //this targets element, and casting is needed.
+    let itemDiv = <HTMLDivElement>this;
+    
+    //if class is incomplete (first classname toDo must be included)
+    if (itemDiv.className == "toDo incomplete") {
+        //make it complete
+        itemDiv.classList.add("complete");
+        itemDiv.classList.remove("incomplete")
+        playMarkSound();
+
+        //append itemDiv onto complete_items div
+        $("complete_items").appendChild(itemDiv);      
+    //otherwise make it incomplete
+    } else {
+        itemDiv.classList.add("incomplete");
+        itemDiv.classList.remove("complete")
+        playEraseSound();
+
+        //append itemDiv onto complete_items div
+        $("incomplete_items").appendChild(itemDiv);      
+    }
+}
+
+function playMarkSound(){
+    let markSound = <HTMLAudioElement>document.getElementById("pencil_mark");
+        markSound.play();
+}
+
+function playEraseSound(){
+    let eraseSound = <HTMLAudioElement>document.getElementById("erase");
+        eraseSound.play();
 }
 
 //refactor cast and get by id.

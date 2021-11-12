@@ -1,0 +1,61 @@
+body{
+    background-image: url(../images/paper_background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 40%;
+}
+
+h1, h2{
+    font-family: 'Dancing Script', cursive;
+    margin-left: 2em;
+}
+
+label{
+    font-weight: bolder;
+}
+
+#add_item{
+    border-radius: 20em;
+}
+
+#due_date{
+    margin-left: 14px;
+}
+
+#is_complete{
+    margin-left: 14px;
+}
+
+#add_item{
+    margin-left: 6em;
+}
+
+.toDo{
+    box-sizing: border-box;
+    padding: .25em;
+    width: 30%;
+    margin: 0px;
+    background-color: lightgray;
+    border-radius: 1em;
+    /* forces word wrap to break one large word */
+    word-wrap: break-word;
+    cursor: pointer;
+}
+
+.toDo h3{
+    margin: 2px;
+}
+
+.toDo p{
+    margin: 2px;
+}
+
+.complete{
+    background-image: url(../images/check.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+img {
+    opacity: .4;
+}

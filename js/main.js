@@ -34,17 +34,45 @@ function displayToDoItem(item) {
     var dueDate = document.createElement("p");
     dueDate.innerText = item.dueDate.toDateString();
     var itemDiv = document.createElement("div");
+    itemDiv.onclick = markAsComplete;
+    itemDiv.classList.add("toDo");
     if (item.isComplete) {
         itemDiv.classList.add("complete");
+    }
+    else {
+        itemDiv.classList.add("incomplete");
     }
     itemDiv.appendChild(itemName);
     itemDiv.appendChild(dueDate);
     if (item.isComplete) {
-        var completeToDo = $("complete_items").appendChild(itemDiv);
+        $("complete_items").appendChild(itemDiv);
     }
     else {
-        var completeToDo = $("incomplete_items").appendChild(itemDiv);
+        $("incomplete_items").appendChild(itemDiv);
     }
+}
+function markAsComplete() {
+    var itemDiv = this;
+    if (itemDiv.className == "toDo incomplete") {
+        itemDiv.classList.add("complete");
+        itemDiv.classList.remove("incomplete");
+        playMarkSound();
+        $("complete_items").appendChild(itemDiv);
+    }
+    else {
+        itemDiv.classList.add("incomplete");
+        itemDiv.classList.remove("complete");
+        playEraseSound();
+        $("incomplete_items").appendChild(itemDiv);
+    }
+}
+function playMarkSound() {
+    var markSound = document.getElementById("pencil_mark");
+    markSound.play();
+}
+function playEraseSound() {
+    var eraseSound = document.getElementById("erase");
+    eraseSound.play();
 }
 function $HTMLinput(id) {
     return document.getElementById(id);
