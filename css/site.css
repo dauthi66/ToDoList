@@ -2,12 +2,25 @@ body{
     background-image: url(../images/paper_background.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+form{
     margin-left: 40%;
 }
 
+#complete_items, #incomplete_items{
+    margin-left: 30%;
+    width: 50%;  
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
 h1, h2{
+    margin-left: 40%;
     font-family: 'Dancing Script', cursive;
-    margin-left: 2em;
+    padding-left: 3em;
 }
 
 label{
@@ -33,7 +46,7 @@ label{
 .toDo{
     box-sizing: border-box;
     padding: .25em;
-    width: 30%;
+    width: 20%;
     margin: 0px;
     background-color: lightgray;
     border-radius: 1em;
@@ -56,6 +69,18 @@ label{
     background-repeat: no-repeat;
 }
 
-img {
-    opacity: .4;
+/* fix formatting when smaller and for small devices */
+@media only screen and (max-width: 700px) {
+    form{
+    margin-left: 20%;
+    }
+
+    h1, h2{
+        margin-left: 20%;
+        padding-left: 3em;
+    }
+
+    #complete_items, #incomplete_items{
+        margin-left: 25%;
+    }
 }

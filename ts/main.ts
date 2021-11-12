@@ -7,6 +7,8 @@ window.onload = function(){
 
     let addItem = $("add_item");
     addItem.onclick = process;
+
+    let 
 }
 
 function process(){
@@ -48,6 +50,11 @@ function getToDoItem():ToDoItem{
     let isComplete = $HTMLinput("is_complete").checked;
 
     let newItem = new ToDoItem(itemName, dueDate, isComplete);
+
+    //convert the object to JSON string
+    let itemString = JSON.stringify(newItem);
+    //store it in user's local storage
+    localStorage.setItem("ToDoItem", itemString)
     
     return newItem;
 }

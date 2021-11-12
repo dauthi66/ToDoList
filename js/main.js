@@ -3,6 +3,7 @@ window.onload = function () {
     picker.setMin(new Date());
     var addItem = $("add_item");
     addItem.onclick = process;
+    let;
 };
 function process() {
     if (isValid()) {
@@ -26,6 +27,8 @@ function getToDoItem() {
     var dueDate = new Date($HTMLinput("due_date").value);
     var isComplete = $HTMLinput("is_complete").checked;
     var newItem = new ToDoItem(itemName, dueDate, isComplete);
+    var itemString = JSON.stringify(newItem);
+    localStorage.setItem("ToDoItem", itemString);
     return newItem;
 }
 function displayToDoItem(item) {
