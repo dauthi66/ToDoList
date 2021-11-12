@@ -1,3 +1,5 @@
+const toDoKey = "toDoKey";
+
 window.onload = function(){
 
     //creates date picker function on due date
@@ -7,14 +9,14 @@ window.onload = function(){
 
     let addItem = $("add_item");
     addItem.onclick = process;
-
-    let 
+    loadToDoItem();
 }
 
 function process(){
     if (isValid()){
         let item = getToDoItem();
         displayToDoItem(item);
+        saveToDoItem(item);
     }
 }
 
@@ -50,11 +52,6 @@ function getToDoItem():ToDoItem{
     let isComplete = $HTMLinput("is_complete").checked;
 
     let newItem = new ToDoItem(itemName, dueDate, isComplete);
-
-    //convert the object to JSON string
-    let itemString = JSON.stringify(newItem);
-    //store it in user's local storage
-    localStorage.setItem("ToDoItem", itemString)
     
     return newItem;
 }
@@ -67,15 +64,17 @@ function displayToDoItem(item:ToDoItem):void{
     let itemName = document.createElement("h3");
     itemName.innerText = item.itemName;
     // create p with user's due date
-    let dueDate = document.createElement("p");
-    dueDate.innerText = item.dueDate.toDateString();
+    let itemDate = document.createElement("p");
+    //dueDate.innerText = item.dueDate.toDateString(); GLITCH IN CONVERTING TO JSON
+    let dueDate = new Date (item.dueDate.toString());
+    itemDate.innerText = dueDate.toDateString();
 
     //create item div to populate with user data
     let itemDiv = document.createElement("div");
     //setup onclick event
     itemDiv.onclick = markAsComplete;
 
-    //give all itemDivs class todo for syling
+    //give all itemDivs class todo for styling
     itemDiv.classList.add("toDo");
     //class it as complete or incomplete for styling
     if (item.isComplete) {
@@ -87,7 +86,7 @@ function displayToDoItem(item:ToDoItem):void{
 
     //place itemName and DueDate within created itemDiv
     itemDiv.appendChild(itemName);
-    itemDiv.appendChild(dueDate);
+    itemDiv.appendChild(itemDate);
 
     //place populated itemDiv in complete or incomplete div
     if(item.isComplete){
@@ -103,7 +102,7 @@ function displayToDoItem(item:ToDoItem):void{
  * play a corresponding sound
  */
 function markAsComplete(){
-    //this targets element, and casting is needed.
+    //this targets element clicked on, and casting is needed.
     let itemDiv = <HTMLDivElement>this;
     
     //if class is incomplete (first classname toDo must be included)
@@ -112,6 +111,7 @@ function markAsComplete(){
         itemDiv.classList.add("complete");
         itemDiv.classList.remove("incomplete")
         playMarkSound();
+        saveToDoItem(itemDiv);
 
         //append itemDiv onto complete_items div
         $("complete_items").appendChild(itemDiv);      
@@ -126,12 +126,35 @@ function markAsComplete(){
     }
 }
 
-function playMarkSound(){
+/**
+ * takes user's input and stores it in their local storage for later visits
+ * @param item a ToDoItem object
+ */
+function saveToDoItem(item:ToDoItem):void{
+
+    //convert the object to JSON string
+    let itemString = JSON.stringify(item);
+    //store it in user's local storage
+    localStorage.setItem(toDoKey, itemString);
+}
+
+/**
+ * retrieves the string from users local storage and converts to ToDoKey
+ * @returns a ToDoItem from locale storage or null if none are found
+ */
+function loadToDoItem():void{
+    //retrieve string from local stoarge from const key and change item to ToDoItem
+    let item:ToDoItem = JSON.parse(localStorage.getItem(toDoKey));
+
+    displayToDoItem(item);
+}
+
+function playMarkSound():void{
     let markSound = <HTMLAudioElement>document.getElementById("pencil_mark");
         markSound.play();
 }
 
-function playEraseSound(){
+function playEraseSound():void{
     let eraseSound = <HTMLAudioElement>document.getElementById("erase");
         eraseSound.play();
 }

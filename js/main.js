@@ -1,14 +1,16 @@
+var toDoKey = "toDoKey";
 window.onload = function () {
     var picker = datepicker('#due_date');
     picker.setMin(new Date());
     var addItem = $("add_item");
     addItem.onclick = process;
-    let;
+    loadToDoItem();
 };
 function process() {
     if (isValid()) {
         var item = getToDoItem();
         displayToDoItem(item);
+        saveToDoItem(item);
     }
 }
 var ToDoItem = (function () {
@@ -27,15 +29,14 @@ function getToDoItem() {
     var dueDate = new Date($HTMLinput("due_date").value);
     var isComplete = $HTMLinput("is_complete").checked;
     var newItem = new ToDoItem(itemName, dueDate, isComplete);
-    var itemString = JSON.stringify(newItem);
-    localStorage.setItem("ToDoItem", itemString);
     return newItem;
 }
 function displayToDoItem(item) {
     var itemName = document.createElement("h3");
     itemName.innerText = item.itemName;
-    var dueDate = document.createElement("p");
-    dueDate.innerText = item.dueDate.toDateString();
+    var itemDate = document.createElement("p");
+    var dueDate = new Date(item.dueDate.toString());
+    itemDate.innerText = dueDate.toDateString();
     var itemDiv = document.createElement("div");
     itemDiv.onclick = markAsComplete;
     itemDiv.classList.add("toDo");
@@ -46,7 +47,7 @@ function displayToDoItem(item) {
         itemDiv.classList.add("incomplete");
     }
     itemDiv.appendChild(itemName);
-    itemDiv.appendChild(dueDate);
+    itemDiv.appendChild(itemDate);
     if (item.isComplete) {
         $("complete_items").appendChild(itemDiv);
     }
@@ -68,6 +69,14 @@ function markAsComplete() {
         playEraseSound();
         $("incomplete_items").appendChild(itemDiv);
     }
+}
+function saveToDoItem(item) {
+    var itemString = JSON.stringify(item);
+    localStorage.setItem(toDoKey, itemString);
+}
+function loadToDoItem() {
+    var item = JSON.parse(localStorage.getItem(toDoKey));
+    displayToDoItem(item);
 }
 function playMarkSound() {
     var markSound = document.getElementById("pencil_mark");
