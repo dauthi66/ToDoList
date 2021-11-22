@@ -1,10 +1,10 @@
-var toDoKey = "toDoKey";
+var toDoArrayKey = "toDoKey";
 window.onload = function () {
     var picker = datepicker('#due_date');
     picker.setMin(new Date());
     var addItem = $("add_item");
     addItem.onclick = process;
-    loadToDoItem();
+    loadSavedItems();
 };
 function process() {
     if (isValid()) {
@@ -71,12 +71,24 @@ function markAsComplete() {
     }
 }
 function saveToDoItem(item) {
-    var itemString = JSON.stringify(item);
-    localStorage.setItem(toDoKey, itemString);
+    var currItems = getToDoItems();
+    if (currItems == null) {
+        currItems = new Array();
+    }
+    currItems.push(item);
+    var currItemsString = JSON.stringify(currItems);
+    localStorage.setItem(toDoArrayKey, currItemsString);
 }
-function loadToDoItem() {
-    var item = JSON.parse(localStorage.getItem(toDoKey));
-    displayToDoItem(item);
+function getToDoItems() {
+    var itemString = localStorage.getItem(toDoArrayKey);
+    var itemArray = JSON.parse(itemString);
+    return itemArray;
+}
+function loadSavedItems() {
+    var itemArray = getToDoItems();
+    for (var item = 0; item < itemArray.length; item++) {
+        displayToDoItem(itemArray[item]);
+    }
 }
 function playMarkSound() {
     var markSound = document.getElementById("pencil_mark");

@@ -1,4 +1,4 @@
-const toDoKey = "toDoKey";
+const toDoArrayKey = "toDoKey";
 
 window.onload = function(){
 
@@ -9,13 +9,14 @@ window.onload = function(){
 
     let addItem = $("add_item");
     addItem.onclick = process;
-    loadToDoItem();
+    loadSavedItems();
 }
 
 function process(){
     if (isValid()){
         let item = getToDoItem();
         displayToDoItem(item);
+        //let savedItems = new Array;
         saveToDoItem(item);
     }
 }
@@ -111,7 +112,6 @@ function markAsComplete(){
         itemDiv.classList.add("complete");
         itemDiv.classList.remove("incomplete")
         playMarkSound();
-        saveToDoItem(itemDiv);
 
         //append itemDiv onto complete_items div
         $("complete_items").appendChild(itemDiv);      
@@ -127,26 +127,43 @@ function markAsComplete(){
 }
 
 /**
- * takes user's input and stores it in their local storage for later visits
+ * takes user's inputs and stores it in their local storage as an array for later visits
  * @param item a ToDoItem object
  */
 function saveToDoItem(item:ToDoItem):void{
 
-    //convert the object to JSON string
-    let itemString = JSON.stringify(item);
-    //store it in user's local storage
-    localStorage.setItem(toDoKey, itemString);
+    let currItems = getToDoItems();
+
+    //if array doesn't exist
+    if (currItems == null) {
+        currItems = new Array();
+    }
+    currItems.push(item);
+
+    //turn array back to string
+    let currItemsString = JSON.stringify(currItems);
+    //resave back into 
+    localStorage.setItem(toDoArrayKey, currItemsString);
 }
 
 /**
  * retrieves the string from users local storage and converts to ToDoKey
- * @returns a ToDoItem from locale storage or null if none are found
+ * stores in an array of ToDoItems
+ * @returns a ToDoItem Array
  */
-function loadToDoItem():void{
-    //retrieve string from local stoarge from const key and change item to ToDoItem
-    let item:ToDoItem = JSON.parse(localStorage.getItem(toDoKey));
+function getToDoItems():ToDoItem[]{ //getToDoItems
+    //retrieve string from local storage from const key array and change item to ToDoItem
+    let itemString = localStorage.getItem(toDoArrayKey); 
+    let itemArray:ToDoItem[] = JSON.parse(itemString);
 
-    displayToDoItem(item);
+    return itemArray;
+}
+
+function loadSavedItems(){
+    let itemArray = getToDoItems();
+    for (let item = 0; item < itemArray.length; item++) {
+        displayToDoItem(itemArray[item]);
+    }
 }
 
 function playMarkSound():void{
@@ -170,5 +187,4 @@ function $(id):HTMLElement {
 }
 //let item = new ToDoItem("Testing", new Date(2021, 12, 11), false);
 
-//Task: Allow user to mark a ToDoItem as completed
 //Task: Store ToDOItems in web storage.
