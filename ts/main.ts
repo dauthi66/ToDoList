@@ -6,9 +6,12 @@ window.onload = function(){
     //@ts-ignore: (ignore error) Datepicker does not have intellisense
     const picker = datepicker('#due_date');
     picker.setMin(new Date()); //sets min to today.
-
+    //set up add_item button
     let addItem = $("add_item");
     addItem.onclick = process;
+    //set up clear_items button
+    let resetItems = $("clear_items");
+    resetItems.onclick = clearItems;
     loadSavedItems();
 }
 
@@ -51,7 +54,7 @@ function getToDoItem():ToDoItem{
     let dueDate = new Date($HTMLinput("due_date").value);
     //set items complete toggle to true if checked
     let isComplete = $HTMLinput("is_complete").checked;
-
+    
     let newItem = new ToDoItem(itemName, dueDate, isComplete);
     
     return newItem;
@@ -84,11 +87,9 @@ function displayToDoItem(item:ToDoItem):void{
     else{
         itemDiv.classList.add("incomplete");
     }
-
     //place itemName and DueDate within created itemDiv
     itemDiv.appendChild(itemName);
     itemDiv.appendChild(itemDate);
-
     //place populated itemDiv in complete or incomplete div
     if(item.isComplete){
         $("complete_items").appendChild(itemDiv); 
@@ -131,18 +132,15 @@ function markAsComplete(){
  * @param item a ToDoItem object
  */
 function saveToDoItem(item:ToDoItem):void{
-
     let currItems = getToDoItems();
-
     //if array doesn't exist
     if (currItems == null) {
         currItems = new Array();
     }
     currItems.push(item);
-
     //turn array back to string
     let currItemsString = JSON.stringify(currItems);
-    //resave back into 
+    //resave back into local storage
     localStorage.setItem(toDoArrayKey, currItemsString);
 }
 
@@ -158,12 +156,21 @@ function getToDoItems():ToDoItem[]{ //getToDoItems
 
     return itemArray;
 }
-
+/**
+ * Retrieve items from storage array and load to page
+ */
 function loadSavedItems(){
     let itemArray = getToDoItems();
     for (let item = 0; item < itemArray.length; item++) {
         displayToDoItem(itemArray[item]);
     }
+}
+/**
+ * clears user's localStorage (ToDoItems)
+ */
+function clearItems(){
+    localStorage.clear();
+    location.reload();
 }
 
 function playMarkSound():void{

@@ -4,6 +4,8 @@ window.onload = function () {
     picker.setMin(new Date());
     var addItem = $("add_item");
     addItem.onclick = process;
+    var resetItems = $("clear_items");
+    resetItems.onclick = clearItems;
     loadSavedItems();
 };
 function process() {
@@ -89,6 +91,10 @@ function loadSavedItems() {
     for (var item = 0; item < itemArray.length; item++) {
         displayToDoItem(itemArray[item]);
     }
+}
+function clearItems() {
+    localStorage.clear();
+    location.reload();
 }
 function playMarkSound() {
     var markSound = document.getElementById("pencil_mark");
