@@ -54,7 +54,7 @@ function getToDoItem():ToDoItem{
     let dueDate = new Date($HTMLinput("due_date").value);
     //set items complete toggle to true if checked
     let isComplete = $HTMLinput("is_complete").checked;
-    
+
     let newItem = new ToDoItem(itemName, dueDate, isComplete);
     
     return newItem;
@@ -192,6 +192,3 @@ function $HTMLinput(id):HTMLInputElement {
 function $(id):HTMLElement {
     return document.getElementById(id);
 }
-//let item = new ToDoItem("Testing", new Date(2021, 12, 11), false);
-
-//Task: Store ToDOItems in web storage.
